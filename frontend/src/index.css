@@ -1,1 +1,19 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --color-black: #333333;
+  --color-white: #ffffff;
+  --color-primary: hsl(252 100% 62%);
+  --color-primary-50: hsl(252 100% 96%);
+  --color-primary-100: hsl(252 100% 84%);
+  --color-secondary: hsl(0 100% 61%);
+  --color-gray: hsl(0 0% 45%);
+  --color-gray-50: hsl(0 0% 98%);
+  --color-gray-100: hsl(0 0% 85%);
+}
+
+* {
+  font-family: "Instrument Sans", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
