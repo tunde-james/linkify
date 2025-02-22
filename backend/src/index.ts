@@ -1,25 +1,27 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, urlencoded } from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import { v2 as cloudinary } from 'cloudinary';
 import 'dotenv/config';
 
 import myUserRoute from './routes/user-route';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDIANRY_API_SECRET,
-});
-
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
+mongoose
+  .connect(process.env.MONGODB_CONNECTION_STRING as string)
+  .then(() => console.log('Connected to database!'));
 
 const app = express();
+app.use(cookieParser());
+app.use(express.json());
+app.use(urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 const PORT = process.env.PORT || 7000;
-
-app.use(express.json());
-app.use(cors());
 
 app.get('/health', async (req: Request, res: Response) => {
   res.send({ message: 'Health OK!' });

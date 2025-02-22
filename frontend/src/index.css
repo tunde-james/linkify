@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-black: #333333;
-  --color-white: #ffffff;
+  --color-black: hsl(0 0% 20%);
+  --color-white: hsl(0 0% 100%);
   --color-primary: hsl(252 100% 62%);
   --color-primary-50: hsl(252 100% 96%);
   --color-primary-100: hsl(252 100% 84%);
@@ -10,6 +10,12 @@
   --color-gray: hsl(0 0% 45%);
   --color-gray-50: hsl(0 0% 98%);
   --color-gray-100: hsl(0 0% 85%);
+  --color-red: hsl(0 100% 61%);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 32px;
 }
 
 * {
