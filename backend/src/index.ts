@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import 'dotenv/config';
 
 import myUserRoute from './routes/user-route';
+import authRoute from './routes/auth-route';
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -28,6 +29,7 @@ app.get('/health', async (req: Request, res: Response) => {
 });
 
 app.use('/api/user', myUserRoute);
+app.use('/api/auth', authRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running on Port: ${PORT}`);

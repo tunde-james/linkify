@@ -2,8 +2,11 @@ import express from 'express';
 import { check } from 'express-validator';
 
 import myUserController from '../controllers/user-controller';
+import verifyToken from '../middleware/auth';
 
 const router = express.Router();
+
+router.get('/me', verifyToken, myUserController.getUser);
 
 router.post(
   '/register',

@@ -22,17 +22,12 @@ export const useRegisterUser = () => {
     }
   };
 
-  const {
-    mutateAsync: registerUser,
-    isPending,
-    isError,
-    isSuccess,
-  } = useMutation({ mutationFn: registerRequest });
+  const { mutateAsync: registerUser, isPending } = useMutation({
+    mutationFn: registerRequest,
+  });
 
   return {
     registerUser,
     isPending,
-    isError,
-    isSuccess,
   };
 };

@@ -17,12 +17,12 @@ const formSchema = z
       .string()
       .min(1, "Email is required")
       .email("Invalid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters long"),
-    // .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    // .regex(/[0-9]/, "Password must contain at least one one number")
+    password: z.string().min(8, "must be at least 8 characters long"),
+    // .regex(/[A-Z]/, "must contain at least one uppercase letter")
+    // .regex(/[0-9]/, "must contain at least one one number")
     // .regex(
     //   /[!@#$%^&*]/,
-    //   "Password must contain at least one special character",
+    //   "must contain at least one special character",
     // ),
     confirmPassword: z.string(),
   })
@@ -62,24 +62,27 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="container pt-8 pb-[126px]">
-      <div className="flex items-center justify-center">
+    <div className="container py-12 md:bg-gray-50">
+      <div className="mb-16 flex items-center justify-start md:justify-center">
         <Navbar />
       </div>
 
-      <div className="pt-16">
-        <h1 className="mb-2 text-2xl leading-9 font-bold">Create account</h1>
-        <p className="text-gray leading-6">
-          Let’s get you started sharing your links!
-        </p>
-      </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mx-auto space-y-6 md:max-w-[476px] md:rounded-xl md:bg-white md:px-10 md:py-10 lg:max-w-3xl"
+      >
+        <div className="mb-10">
+          <h1 className="mb-2 text-2xl leading-9 font-bold">Create account</h1>
+          <p className="text-gray leading-6">
+            Let’s get you started sharing your links!
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 pt-10">
-        <div className="flex flex-col gap-1">
+        <div className="relative flex w-full flex-col gap-1">
           <label htmlFor="email">Email address</label>
 
           <div
-            className={`group relative flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.email ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
+            className={`group flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.email ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
           >
             <img src={iconEmail} alt="envelope icon" className="h-4 w-4" />
             <input
@@ -93,17 +96,17 @@ const RegisterPage = () => {
           </div>
 
           {errors.email ? (
-            <p className="text-red absolute top-[290px] right-12 block text-xs">
+            <p className="text-red text-xs md:absolute md:top-[60%] md:right-6">
               {errors.email.message}
             </p>
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="relative flex w-full flex-col gap-1">
           <label htmlFor="password">Create password</label>
 
           <div
-            className={`group relative flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
+            className={`group flex items-center gap-3 rounded-lg border border-gray-100 bg-inherit p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
           >
             <img src={iconPassword} alt="envelope icon" className="h-4 w-4" />
             <input
@@ -117,17 +120,17 @@ const RegisterPage = () => {
           </div>
 
           {errors.password ? (
-            <p className="text-red absolute top-[390px] right-12 block text-xs">
+            <p className="text-red text-xs md:absolute md:top-[60%] md:right-6">
               {errors.password.message}
             </p>
           ) : null}
         </div>
 
-        <div className="flex flex-col gap-1">
+        <div className="relative flex w-full flex-col gap-1">
           <label htmlFor="confirmPassword">Confirm password</label>
 
           <div
-            className={`group relative flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
+            className={`group flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
           >
             <img src={iconPassword} alt="envelope icon" className="h-4 w-4" />
             <input
@@ -141,7 +144,7 @@ const RegisterPage = () => {
           </div>
 
           {errors.confirmPassword ? (
-            <p className="text-red absolute top-[492px] right-12 block text-xs">
+            <p className="text-red text-xs md:absolute md:top-[60%] md:right-6">
               {errors.confirmPassword.message}
             </p>
           ) : null}
