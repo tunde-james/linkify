@@ -1,5 +1,12 @@
+import Navbar from "../components/navbar";
+
 const CustomizeLinkPage = () => {
-  return <div>CustomizeLinkPage</div>;
+  return (
+    <div>
+      <Navbar />
+      CustomizeLinkPage
+    </div>
+  );
 };
 
 export default CustomizeLinkPage;

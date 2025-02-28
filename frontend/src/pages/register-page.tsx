@@ -1,15 +1,14 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { z } from "zod";
 
 import Navbar from "../components/navbar";
 import iconEmail from "../assets/icon-email.svg";
 import iconPassword from "../assets/icon-password.svg";
 import { Button } from "../components/button";
-import { useRegisterUser } from "../api/user-api";
-import { useAuthStore } from "../store/auth-store";
-import { useToastStore } from "../store/toast-store";
+import { useRegister } from "../hooks/use-auth";
 
 const formSchema = z
   .object({
@@ -34,10 +33,7 @@ const formSchema = z
 export type RegisterFormData = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
-  const { registerUser, isPending } = useRegisterUser();
-  const setUser = useAuthStore((state) => state.setUser);
-  const showToast = useToastStore((state) => state.showToast);
+  const { registerUser, isPending } = useRegister();
 
   const {
     register,
@@ -47,18 +43,8 @@ const RegisterPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (formData: RegisterFormData) => {
-    try {
-      await registerUser(formData);
-      setUser({ email: formData.email });
-      showToast({ message: "Registration successful", type: "SUCCESS" });
-      navigate("/customize-link");
-    } catch (error) {
-      showToast({
-        message: error instanceof Error ? error.message : "Registration failed",
-        type: "ERROR",
-      });
-    }
+  const onSubmit = (formData: RegisterFormData) => {
+    registerUser(formData);
   };
 
   return (
@@ -158,7 +144,7 @@ const RegisterPage = () => {
           {isPending ? "Please wait..." : "Create new account"}
         </Button>
 
-        <div className="text-gray text-center leading-6">
+        <div className="ttext-gray flex flex-col text-center leading-6 md:flex-row md:justify-center md:gap-0.5">
           <p>Already have an account?</p>{" "}
           <Link to="/login" className="text-primary">
             Login
