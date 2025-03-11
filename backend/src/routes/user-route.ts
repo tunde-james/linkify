@@ -20,4 +20,6 @@ router.post(
   myUserController.createUser
 );
 
+router.put('/update-user', verifyToken, myUserController.updateUser)
+
 export default router;

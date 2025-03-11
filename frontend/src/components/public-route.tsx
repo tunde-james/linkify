@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from "react-router";
 import { useAuthStore } from "../store/auth-store";
 
-interface ProtectedRouteProps {
+interface PublicRouteProps {
   redirectPath?: string;
 }
 
-const ProtectedRoute = ({
-  redirectPath = "/login",
-}: ProtectedRouteProps) => {
+const PublicRoute = ({
+  redirectPath = "/customize-link",
+}: PublicRouteProps) => {
   const { isAuthenticated, isLoading } = useAuthStore();
 
   if (isLoading) {
@@ -18,11 +18,11 @@ const ProtectedRoute = ({
     );
   }
 
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     return <Navigate to={redirectPath} replace />;
   }
 
   return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default PublicRoute;

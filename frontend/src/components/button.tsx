@@ -1,6 +1,6 @@
 import React from "react";
 
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "outline";
 type ButtonSize = "default" | "sm" | "lg";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,12 +18,14 @@ const variantStyles: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white active:bg-primary-100",
   secondary:
     "border border-primary hover:bg-primary-50 active:bg-primary-50 hover:text-white active:text-white",
+  outline:
+    "border border-primary text-primary font-semibold leading-6 active:bg-primary-50",
 };
 
 // Size-specific styles
 const sizeStyles: Record<ButtonSize, string> = {
   default: " py-[11px] px-4",
-  sm: "",
+  sm: "py-0.5 px-2",
   lg: "",
 };
 

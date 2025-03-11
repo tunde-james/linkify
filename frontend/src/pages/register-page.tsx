@@ -48,14 +48,14 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="container py-12 md:bg-gray-50">
+    <div className="container flex min-h-dvh flex-col items-center justify-center md:bg-gray-50 lg:py-20">
       <div className="mb-16 flex items-center justify-start md:justify-center">
         <Navbar />
       </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto space-y-6 md:max-w-[476px] md:rounded-xl md:bg-white md:px-10 md:py-10 lg:max-w-3xl"
+        className="mx-auto space-y-6 md:w-[540px] md:rounded-xl md:bg-white md:px-10 md:py-10 lg:w-[700px]"
       >
         <div className="mb-10">
           <h1 className="mb-2 text-2xl leading-9 font-bold">Create account</h1>
@@ -65,7 +65,9 @@ const RegisterPage = () => {
         </div>
 
         <div className="relative flex w-full flex-col gap-1">
-          <label htmlFor="email">Email address</label>
+          <label htmlFor="email" className="text-xs text-black">
+            Email address
+          </label>
 
           <div
             className={`group flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.email ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
@@ -89,7 +91,9 @@ const RegisterPage = () => {
         </div>
 
         <div className="relative flex w-full flex-col gap-1">
-          <label htmlFor="password">Create password</label>
+          <label htmlFor="password" className="text-xs text-black">
+            Create password
+          </label>
 
           <div
             className={`group flex items-center gap-3 rounded-lg border border-gray-100 bg-inherit p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
@@ -113,7 +117,9 @@ const RegisterPage = () => {
         </div>
 
         <div className="relative flex w-full flex-col gap-1">
-          <label htmlFor="confirmPassword">Confirm password</label>
+          <label htmlFor="confirmPassword" className="text-xs text-black">
+            Confirm password
+          </label>
 
           <div
             className={`group flex items-center gap-3 rounded-lg border border-gray-100 p-3 text-black transition-colors duration-200 ${errors.password ? "border-red" : "focus-within:ring-primary/20 focus-within:border-primary shadow-primary focus-within:ring-2 focus-within:shadow-2xs"}`}
