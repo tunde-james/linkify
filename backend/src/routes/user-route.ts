@@ -1,12 +1,21 @@
 import express from 'express';
 import { check } from 'express-validator';
+import multer from 'multer';
 
 import myUserController from '../controllers/user-controller';
 import verifyToken from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/me', verifyToken, myUserController.getUser);
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024, // 2MB
+  },
+});
+
+router.get('/me', verifyToken, myUserController.getCurrentUser);
 
 router.post(
   '/register',
@@ -20,6 +29,15 @@ router.post(
   myUserController.createUser
 );
 
-router.put('/update-user', verifyToken, myUserController.updateUser)
+router.put(
+  '/profile',
+  verifyToken,
+  upload.single('imageFile'),
+  [
+    check('firstName').notEmpty().withMessage('First name is required'),
+    check('lastName').notEmpty().withMessage('Last  name is required'),
+  ],
+  myUserController.updateUser
+);
 
 export default router;

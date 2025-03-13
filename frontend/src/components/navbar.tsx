@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router";
 import { Link as LinkIcon, CircleUser, Eye } from "lucide-react";
 
-import devlinksLogo from "../assets/logo-devlinks.svg";
+import devlinksLogo from "/images/logo-devlinks.svg";
 import { Button } from "./button";
 import { useAuthStore } from "../store/auth-store";
 import { useLogout } from "../hooks/use-auth";
@@ -45,7 +45,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/customize-link"
-                className={`flex gap-4 ${isActive("/customize-link") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
+                className={`flex items-center gap-4 ${isActive("/customize-link") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
               >
                 <LinkIcon className="h-5 w-5" />
                 <p className="hidden md:block">Links</p>
@@ -55,7 +55,7 @@ const Navbar = () => {
             <li className="group relative">
               <Link
                 to="/profile"
-                className={`flex gap-4 ${isActive("/profile") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
+                className={`flex items-center gap-4 ${isActive("/profile") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
               >
                 <CircleUser className="h-5 w-5" />
                 <p className="hidden md:block">Profile Details</p>
@@ -73,7 +73,7 @@ const Navbar = () => {
 
           <Link
             to="/preview"
-            className={`${isActive("/preview") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
+            className={`flex items-center gap-4 ${isActive("/preview") ? "bg-primary-50 text-primary rounded-lg px-7 py-3" : "bg-white"}`}
           >
             <Eye className="h-5 w-5" />
             <p className="hidden md:block">Preview</p>

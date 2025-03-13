@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import iconEmail from "../assets/icon-email.svg";
-import iconPassword from "../assets/icon-password.svg";
+import iconEmail from "/images/icon-email.svg";
+import iconPassword from "/images/icon-password.svg";
 import { Button } from "../components/button";
 import { useLogin } from "../hooks/use-auth";
 import Navbar from "../components/navbar";

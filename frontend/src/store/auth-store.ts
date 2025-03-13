@@ -2,6 +2,11 @@ import { create } from "zustand";
 
 interface User {
   email: string;
+  profile?: {
+    firstName: string | null;
+    lastName: string| null;
+    imageUrl?: string | null
+  }
 }
 
 interface AuthStore {

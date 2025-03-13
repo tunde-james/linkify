@@ -3,6 +3,28 @@ import { RegisterFormData } from "../pages/register-page";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
+export interface IUser {
+  email: string;
+  profile?: {
+    firstName: string | null;
+    lastName: string | null;
+    imageUrl?: string | null;
+  };
+}
+
+export const fetchCurrentUser = async (): Promise<IUser> => {
+  const response = await fetch(`${API_BASE_URL}/api/user/me`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error fetching user.");
+  }
+
+  return response.json();
+};
+
 export const registerUserRequest = async (formData: RegisterFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/user/register`, {
     method: "POST",
@@ -41,6 +63,22 @@ export const loginUserRequest = async (formData: LoginFormData) => {
   return responseBody;
 };
 
+export const updateUserRequest = async (profileFormData: FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
+    method: "PUT",
+    credentials: "include",
+    body: profileFormData,
+  });
+
+  const responseBody = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseBody.message);
+  }
+
+  return responseBody;
+};
+
 export const validateToken = async () => {
   const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     method: "GET",
@@ -49,23 +87,6 @@ export const validateToken = async () => {
 
   if (!response.ok) {
     throw new Error("Token invalid.");
-  }
-
-  return response.json();
-};
-
-interface User {
-  _id: string;
-  email: string;
-}
-
-export const fetchUserProfile = async (): Promise<User> => {
-  const response = await fetch(`${API_BASE_URL}/api/user/me`, {
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch user profile");
   }
 
   return response.json();

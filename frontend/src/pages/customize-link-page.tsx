@@ -1,6 +1,6 @@
 import { Button } from "../components/button";
 import Navbar from "../components/navbar";
-import illustrationEmpty from "../assets/illustration-empty.svg";
+import illustrationEmpty from "/images/illustration-empty.svg";
 import { Plus } from "lucide-react";
 import LinkForm, { Link } from "../components/link-form";
 import { useState } from "react";

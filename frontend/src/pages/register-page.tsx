@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import Navbar from "../components/navbar";
-import iconEmail from "../assets/icon-email.svg";
-import iconPassword from "../assets/icon-password.svg";
+import iconEmail from "/images/icon-email.svg";
+import iconPassword from "/images/icon-password.svg";
 import { Button } from "../components/button";
 import { useRegister } from "../hooks/use-auth";
 

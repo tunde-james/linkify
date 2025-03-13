@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import 'dotenv/config';
+import { v2 as cloudinary } from 'cloudinary';
 
 import myUserRoute from './routes/user-route';
 import authRoute from './routes/auth-route';
@@ -10,6 +11,14 @@ import authRoute from './routes/auth-route';
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => console.log('Connected to database!'));
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDIANRY_API_SECRET,
+});
+
+
 
 const app = express();
 app.use(cookieParser());

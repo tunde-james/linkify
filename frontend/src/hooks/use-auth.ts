@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import {
-  fetchUserProfile,
+  fetchCurrentUser,
   loginUserRequest,
   logoutUser,
   registerUserRequest,
+  updateUserRequest,
   validateToken,
 } from "../api/auth-api";
 import { useAuthStore } from "../store/auth-store";
@@ -23,7 +24,7 @@ export const useAuth = () => {
         setAuthenticated(true);
 
         // Then fetch the user profile
-        const userData = await fetchUserProfile();
+        const userData = await fetchCurrentUser();
         setUser(userData);
 
         return userData;
@@ -40,6 +41,28 @@ export const useAuth = () => {
   });
 
   return { isLoading };
+};
+
+export const useFetchCurrentUser = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
+  const {
+    data: currentUser,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["fetchCurrentUser"],
+    queryFn: fetchCurrentUser,
+  });
+
+  if (error) {
+    showToast({ message: "Error fetching user.", type: "ERROR" });
+  }
+
+  return {
+    currentUser,
+    isLoading,
+  };
 };
 
 export const useRegister = () => {
@@ -84,6 +107,28 @@ export const useLogin = () => {
 
   return { loginUser, isPending };
 };
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+  const showToast = useToastStore((state) => state.showToast);
+
+  const {mutate: updateUserProfile, isPending} = useMutation({
+    mutationFn: updateUserRequest,
+    onSuccess: async () => {
+      showToast({message: 'Profile updated successfully', type:'SUCCESS'});
+      await queryClient.invalidateQueries({queryKey: ['auth']});
+      await queryClient.invalidateQueries({queryKey: ['fetchCurrentUser']})
+    },
+    onError:(error: Error) => {
+      showToast({message: error.message || 'Failed to update profile', type:'ERROR'})
+    }
+  })
+
+  return {
+    updateUserProfile,
+    isPending
+  }
+}
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
