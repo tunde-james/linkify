@@ -1,19 +1,12 @@
 import { create } from "zustand";
 
-interface User {
-  email: string;
-  profile?: {
-    firstName: string | null;
-    lastName: string| null;
-    imageUrl?: string | null
-  }
-}
+import { IUser } from "../types";
 
 interface AuthStore {
-  user: User | null;
+  user: IUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  setUser: (user: User | null) => void;
+  setUser: (user: IUser | null) => void;
   setAuthenticated: (isAuthenticated: boolean) => void;
   setLoading: (isLoading: boolean) => void;
   logout: () => void;

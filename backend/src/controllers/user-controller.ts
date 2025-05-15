@@ -63,36 +63,40 @@ const createUser = async (req: Request, res: Response) => {
     return res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: 'Something went wron.g' });
+    res.status(500).send({ message: 'Something went wrong' });
   }
 };
 
 const updateUser = async (req: Request, res: Response) => {
-  const errors =  validationResult(req);
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({message: errors.array()})
+    return res.status(400).json({ message: errors.array() });
   }
 
   try {
-    const user = await User.findById(req.userId)
+    const user = await User.findById(req.userId);
 
     if (!user) {
-      return res.status(404).json({message: "User not found."})
+      return res.status(404).json({ message: 'User not found.' });
     }
 
     user.profile.firstName = req.body.firstName;
     user.profile.lastName = req.body.lastName;
 
-    if (req.file) {
-      const imageUrl = await uploadImage(req.file as Express.Multer.File);
-      user.profile.imageUrl = imageUrl;
-    }
+    // if (req.file) {
+    //   const imageUrl = await uploadImage(req.file as Express.Multer.File);
+    //   user.profile.imageUrl = imageUrl;
+    // }
 
     await user.save();
-    res.status(200).json({message: "Profile updated successfully"})
+
+    const updatedUser = await User.findById(req.userId).select('-password');
+    res
+      .status(200)
+      .json({ user: updateUser, message: 'Profile updated successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).json({message: "Something went wrong"})
+    res.status(500).json({ message: 'Something went wrong' });
   }
 };
 
@@ -102,12 +106,13 @@ export default {
   updateUser,
 };
 
+// const uploadImage = async (file: Express.Multer.File) => {
+//   const image = file;
+//   const base64Image = Buffer.from(image.buffer).toString('base64');
+//   const dataURI = `data:${image.mimetype};base64,${base64Image}`;
 
-const uploadImage = async (file: Express.Multer.File) => {
-  const image = file;
-  const base64Image = Buffer.from(image.buffer).toString('base64');
-  const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-
-  const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
-  return uploadResponse.url;
-}
+//   const uploadResponse = await cloudinary.v2.uploader.upload(dataURI, {
+//     folder: 'devlinks',
+//   });
+//   return uploadResponse.url;
+// };

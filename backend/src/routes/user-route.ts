@@ -32,7 +32,7 @@ router.post(
 router.put(
   '/profile',
   verifyToken,
-  upload.single('imageFile'),
+  // upload.single('imageFile'),
   [
     check('firstName').notEmpty().withMessage('First name is required'),
     check('lastName').notEmpty().withMessage('Last  name is required'),

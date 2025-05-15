@@ -3,14 +3,7 @@ import { RegisterFormData } from "../pages/register-page";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
-export interface IUser {
-  email: string;
-  profile?: {
-    firstName: string | null;
-    lastName: string | null;
-    imageUrl?: string | null;
-  };
-}
+import { IUser } from "../types";
 
 export const fetchCurrentUser = async (): Promise<IUser> => {
   const response = await fetch(`${API_BASE_URL}/api/user/me`, {
@@ -25,7 +18,7 @@ export const fetchCurrentUser = async (): Promise<IUser> => {
   return response.json();
 };
 
-export const registerUserRequest = async (formData: RegisterFormData) => {
+export const signupUserRequest = async (formData: RegisterFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/user/register`, {
     method: "POST",
     credentials: "include",

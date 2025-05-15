@@ -7,6 +7,7 @@ import { v2 as cloudinary } from 'cloudinary';
 
 import myUserRoute from './routes/user-route';
 import authRoute from './routes/auth-route';
+import linkRoute from './routes/link-routes';
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -17,8 +18,6 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDIANRY_API_SECRET,
 });
-
-
 
 const app = express();
 app.use(cookieParser());
@@ -39,6 +38,7 @@ app.get('/health', async (req: Request, res: Response) => {
 
 app.use('/api/user', myUserRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/links', linkRoute);
 
 app.listen(PORT, () => {
   console.log(`Server running on Port: ${PORT}`);

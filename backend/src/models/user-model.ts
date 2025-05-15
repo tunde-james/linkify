@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+import * as argon2 from 'argon2';
+
 import { IUser, IUserProfile } from '../shared/types';
 
 const userProfileSchema = new mongoose.Schema<IUserProfile>({
@@ -28,7 +29,7 @@ const userSchema = new mongoose.Schema<IUser>(
 
 userSchema.pre('save', async function (this: IUser, next) {
   if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 8);
+    this.password = await argon2.hash(this.password);
   }
   next();
 });

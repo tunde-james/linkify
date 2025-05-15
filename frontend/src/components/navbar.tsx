@@ -16,7 +16,7 @@ const Navbar = () => {
   return (
     <nav>
       {!isAuthenticated && !user ? (
-        <div className="container flex items-center justify-start md:justify-center">
+        <div className="flex items-center justify-start md:justify-center">
           <Link to="/" className="flex items-center gap-2">
             <img
               src={devlinksLogo}
@@ -29,7 +29,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="container flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-4">
           <Link to="/customize-link" className="flex items-center gap-2">
             <img
               src={devlinksLogo}
