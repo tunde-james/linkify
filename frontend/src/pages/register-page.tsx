@@ -8,8 +8,9 @@ import Navbar from "../components/navbar";
 import iconEmail from "/images/icon-email.svg";
 import iconPassword from "/images/icon-password.svg";
 import { Button } from "../components/button";
-import { useRegisterUser } from "../hooks/use-auth";
+// import { useRegisterUser } from "../hooks/use-auth";
 import Container from "../components/container";
+import { useRegisterUser } from "../api/user-auth-api";
 
 const formSchema = z
   .object({
@@ -34,7 +35,7 @@ const formSchema = z
 export type RegisterFormData = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
-  const { signupUser, isPending } = useRegisterUser();
+  const { createUser, isPending } = useRegisterUser();
 
   const {
     register,
@@ -45,7 +46,7 @@ const RegisterPage = () => {
   });
 
   const onSubmit = (formData: RegisterFormData) => {
-    signupUser(formData);
+    createUser(formData);
   };
 
   return (

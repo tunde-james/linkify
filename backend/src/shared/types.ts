@@ -3,7 +3,8 @@ import { Document } from 'mongoose';
 export interface IUserProfile {
   firstName: string | null;
   lastName: string | null;
-  imageUrl: string | null;
+  imageUrl?: string | null;
+  imagePublicId?: string | null;
 }
 
 export interface IUser extends Document {
@@ -25,6 +26,7 @@ export interface IUserProfileInput {
   firstName: string;
   lastName: string;
   imageFile?: Express.Multer.File;
+  imagePublicId?: string | null;
 }
 
 export interface ILink extends Document {

@@ -7,6 +7,7 @@ const userProfileSchema = new mongoose.Schema<IUserProfile>({
   firstName: { type: String, default: null },
   lastName: { type: String, default: null },
   imageUrl: { type: String, default: null },
+  imagePublicId: { type: String, default: null },
 });
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema<IUser>(
         firstName: null,
         lastName: null,
         imageUrl: null,
+        imagePublicId: null,
       }),
     },
   },

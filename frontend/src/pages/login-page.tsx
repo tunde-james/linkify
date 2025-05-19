@@ -6,9 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import iconEmail from "/images/icon-email.svg";
 import iconPassword from "/images/icon-password.svg";
 import { Button } from "../components/button";
-import { useLoginUser } from "../hooks/use-auth";
+// import { useLoginUser } from "../hooks/use-auth";
 import Navbar from "../components/navbar";
 import Container from "../components/container";
+import { useLoginUser } from "../api/user-auth-api";
 
 const formSchema = z.object({
   email: z.string().min(1, "Can’t be empty").email("Inavlid email address"),

@@ -4,7 +4,7 @@ import { Link as LinkIcon, CircleUser, Eye } from "lucide-react";
 import devlinksLogo from "/images/logo-devlinks.svg";
 import { Button } from "./button";
 import { useAuthStore } from "../store/auth-store";
-import { useLogout } from "../hooks/use-auth";
+import { useLogout } from "../api/nevada-51/hooks/use-auth";
 
 const Navbar = () => {
   const { isAuthenticated, user } = useAuthStore();
@@ -29,7 +29,7 @@ const Navbar = () => {
           </Link>
         </div>
       ) : (
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between p-4">
           <Link to="/customize-link" className="flex items-center gap-2">
             <img
               src={devlinksLogo}

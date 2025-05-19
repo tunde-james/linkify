@@ -27,4 +27,8 @@
 html,
 body {
   height: 100%;
+
+  @media (min-width: 768px) {
+    background-color: var(--color-gray-50);
+  }
 }
