@@ -108,33 +108,6 @@ export const useFetchCurrentUser = () => {
   }
 
   return { currentUser, isLoading };
-
-  // const {
-  //   data: currentUser,
-  //   isLoading,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["fetchCurrentUser"],
-  //   queryFn: async (): Promise<IUser> => {
-  //     const response = await fetch(`${API_BASE_URL}/api/user/me`, {
-  //       method: "GET",
-  //       credentials: "include",
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Error fetching user.");
-  //     }
-
-  //     return response.json();
-  //   },
-  // });
-
-  // if (error) {
-  //   console.error("Error fetching user:", error);
-  //   showToast({ message: "Error fetching user.", type: "ERROR" });
-  // }
-
-  // return { currentUser, isLoading };
 };
 
 export const useRegisterUser = () => {
@@ -221,69 +194,16 @@ export const useLoginUser = () => {
   return { loginUser, isPending };
 };
 
-// export const useUpdateUserProfile2 = () => {
-//   const queryClient = useQueryClient();
-//   const showToast = useToastStore((state) => state.showToast);
-//   const { currentUser } = useFetchCurrentUser();
-
-//   if (!currentUser?._id) {
-//     throw new Error("User not authenticated");
-//   }
-
-//   const updateUserRequest = async (formData: FormData) => {
-//     const response = await fetch(
-//       `${API_BASE_URL}/api/user/profile/${currentUser._id}`,
-//       {
-//         method: "PUT",
-//         credentials: "include",
-//         body: formData,
-//       },
-//     );
-
-//     if (!response.ok) {
-//       throw new Error("Failed to create user");
-//     }
-
-//     return response.json();
-//   };
-
-//   const {
-//     mutateAsync: updateUser,
-//     isPending,
-//     isSuccess,
-//     error,
-//   } = useMutation({ mutationFn: updateUserRequest });
-
-//   if (isSuccess) {
-//     showToast({ message: "User updated successfully", type: "SUCCESS" });
-//     queryClient.invalidateQueries({ queryKey: ["auth"] });
-
-//   }
-
-//   if (error) {
-//     showToast({
-//       message: error.message || "Failed to update user",
-//       type: "ERROR",
-//     });
-//   }
-
-//   return { updateUser, isPending };
-// };
-
 export const useUpdateUserProfile = () => {
   const queryClient = useQueryClient();
   const showToast = useToastStore((state) => state.showToast);
- 
 
   const updateUserRequest = async (formData: FormData) => {
-    const response = await fetch(
-      `${API_BASE_URL}/api/user/profile`,
-      {
-        method: "PUT",
-        credentials: "include",
-        body: formData,
-      },
-    );
+    const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
+      method: "PUT",
+      credentials: "include",
+      body: formData,
+    });
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -302,7 +222,7 @@ export const useUpdateUserProfile = () => {
 
   if (isSuccess) {
     showToast({ message: "User updated successfully", type: "SUCCESS" });
-    queryClient.invalidateQueries({ queryKey: ["auth"] });
+    queryClient.invalidateQueries({ queryKey: ["fetchCurrentUser"] });
   }
 
   if (error) {
@@ -313,6 +233,51 @@ export const useUpdateUserProfile = () => {
   }
 
   return { updateUser, isPending };
+};
+
+export const useDeleteProfileImage = () => {
+  const queryClient = useQueryClient();
+  const showToast = useToastStore((state) => state.showToast);
+
+  const deleteProfileImageRequest = async () => {
+    const response = await fetch(`${API_BASE_URL}/api/user/profile/image`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to delete profile image");
+    }
+
+    return response.json();
+  };
+
+  const {
+    mutateAsync: deleteProfileImage,
+    isPending,
+    isSuccess,
+    error,
+  } = useMutation({
+    mutationFn: deleteProfileImageRequest,
+  });
+
+  if (isSuccess) {
+    showToast({
+      message: "Profile image deleted successfully",
+      type: "SUCCESS",
+    });
+    queryClient.invalidateQueries({ queryKey: ["fetchCurrentUser"] });
+  }
+
+  if (error) {
+    showToast({
+      message: error.message || "Failed to delete profile image",
+      type: "ERROR",
+    });
+  }
+
+  return { deleteProfileImage, isPending };
 };
 
 export const useLogout = () => {

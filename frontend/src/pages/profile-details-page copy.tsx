@@ -1,18 +1,17 @@
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../components/navbar";
 import { Button } from "../components/button";
+import uploadImage from "/images/icon-upload-image.svg";
 
 import Container from "../components/container";
 import {
   useFetchCurrentUser,
   useUpdateUserProfile,
-  useDeleteProfileImage,
 } from "../api/user-auth-api";
-import ProfileImageUpload from "../components/profile-image-upload";
 
 const formSchema = z
   .object({
@@ -32,18 +31,17 @@ export type UserFormData = z.infer<typeof formSchema>;
 const ProfileDetailsPage = () => {
   const { currentUser, isLoading } = useFetchCurrentUser();
   const { updateUser, isPending } = useUpdateUserProfile();
-  const { deleteProfileImage, isPending: isDeleting } = useDeleteProfileImage();
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const formInitialized = useRef(false);
+  const [isImageDeleted, setIsImageDeleted] = useState(false);
 
   const {
     register,
     reset,
     formState: { errors },
     handleSubmit,
+    setValue,
     watch,
   } = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
@@ -52,7 +50,7 @@ const ProfileDetailsPage = () => {
   });
 
   useEffect(() => {
-    if (currentUser && !formInitialized.current) {
+    if (currentUser) {
       reset({
         email: currentUser.email || "",
         firstName: currentUser.profile?.firstName || "",
@@ -62,27 +60,22 @@ const ProfileDetailsPage = () => {
 
       // Also update the preview image when currentUser changes
       setPreviewImage(currentUser.profile?.imageUrl || null);
-      formInitialized.current = true;
     }
   }, [currentUser, reset]);
 
-  const handleSelectImage = (file: File) => {
-    // Create preview URL
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImage(reader.result as string);
-    };
-    reader.readAsDataURL(file);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    if (file) {
+      setSelectedImage(file);
+      setValue("imageFile", file);
 
-    // Store the file for later submission with the form
-    setSelectedImage(file);
-  };
-
-  const handleDeleteImage = () => {
-    deleteProfileImage();
-
-    setPreviewImage(null);
-    setSelectedImage(null);
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const onSubmit = (data: UserFormData) => {
@@ -96,8 +89,6 @@ const ProfileDetailsPage = () => {
     }
 
     updateUser(formData);
-
-    setSelectedImage(null);
   };
 
   const firstName = watch("firstName");
@@ -126,24 +117,49 @@ const ProfileDetailsPage = () => {
                 </p>
 
                 <div className="rounded-xl bg-gray-50 p-5 md:flex md:items-center md:justify-between">
-                  <p className="text-gray mb-4 justify-self-start leading-[150%]">
+                  <p className="text-gray mb-4 leading-[150%]">
                     Profile picture
                   </p>
 
-                  <div className="mr-6 ml-auto md:ml-2">
-                    <div className="mb-6 flex flex-col">
-                      <ProfileImageUpload
-                        currentImageUrl={previewImage}
-                        onSelectImage={handleSelectImage}
-                        onDeleteImage={handleDeleteImage}
-                        isDeleting={isDeleting}
-                      />
-                    </div>
+                  <label
+                    htmlFor="imageUpload"
+                    className="mr-6 ml-auto cursor-pointer"
+                  >
+                    <div className="mb-6">
+                      {!previewImage ? (
+                        <div className="bg-primary-50 flex h-[193px] w-[193px] flex-col items-center justify-center rounded-xl px-10 py-[60px]">
+                          <img
+                            src={uploadImage}
+                            alt="Upload image icon"
+                            className="object-cover"
+                          />
 
-                    <p className="text-gray w-[255px] text-sm leading-[150%] md:w-[127px]">
-                      Image must be below 1024x1024px. Use PNG or JPG format.
-                    </p>
-                  </div>
+                          <p className="text-primary mt-2 text-sm leading-[150%] font-semibold">
+                            + Upload Image
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="relative h-[193px] w-[193px]">
+                          <img
+                            src={previewImage}
+                            alt="Profile image preview"
+                            className="absolute inset-0 h-full w-full rounded-xl object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </label>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={handleImageChange}
+                    className="hidden"
+                  />
+
+                  <p className="text-gray w-[255px] text-sm leading-[150%] md:w-[127px]">
+                    Image must be below 1024x1024px. Use PNG or JPG format.
+                  </p>
                 </div>
               </div>
 
@@ -171,7 +187,7 @@ const ProfileDetailsPage = () => {
                       />
                     </div>
                     {errors.firstName && (
-                      <p className="mt-1 text-xs text-red-500 md:absolute md:top-[35%] md:right-6 md:mt-0">
+                      <p className="md:ml-1/3 mt-1 text-xs text-red-500">
                         {errors.firstName.message}
                       </p>
                     )}
@@ -197,9 +213,9 @@ const ProfileDetailsPage = () => {
                         {...register("lastName")}
                       />
                     </div>
-                    {errors.lastName && (
-                      <p className="mt-1 text-xs text-red-500 md:absolute md:top-[35%] md:right-6 md:mt-0">
-                        {errors.lastName.message}
+                    {errors.firstName && (
+                      <p className="md:ml-1/3 mt-1 text-xs text-red-500">
+                        {errors.firstName.message}
                       </p>
                     )}
                   </div>

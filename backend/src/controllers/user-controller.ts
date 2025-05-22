@@ -6,7 +6,6 @@ import fs from 'fs';
 
 import User from '../models/user-model';
 import { uploadToCloudinary } from '../helpers/cloudinary-helper';
-import { fstat } from 'fs';
 
 const getCurrentUser = async (req: Request, res: Response) => {
   const currentUser = req.userId;
@@ -71,47 +70,6 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-// const updateUser2 = async (req: Request, res: Response) => {
-//   const errors = validationResult(req);
-//   if (!errors.isEmpty()) {
-//     return res.status(400).json({ message: errors.array() });
-//   }
-
-//   try {
-//     const id = req.params.id;
-
-//     if (id !== req.userId) {
-//       return res
-//         .status(403)
-//         .json({ message: 'Not authorized to update this data' });
-//     }
-
-//     const user = await User.findById(id);
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found.' });
-//     }
-
-//     user.profile.firstName = req.body.firstName;
-//     user.profile.lastName = req.body.lastName;
-
-//     // if (req.file) {
-//     //   const imageUrl = await uploadImage(req.file as Express.Multer.File);
-//     //   user.profile.imageUrl = imageUrl;
-//     // }
-
-//     await user.save();
-
-//     const updatedUser = await User.findById(req.userId).select('-password');
-//     res
-//       .status(200)
-//       .json({ user: updatedUser, message: 'Profile updated successfully' });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: 'Something went wrong' });
-//   }
-// };
-
 const updateUser = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -135,7 +93,18 @@ const updateUser = async (req: Request, res: Response) => {
         const uploadResult = await uploadToCloudinary(req.file.path);
 
         if (existingUser.profile.imagePublicId) {
-          await cloudinary.uploader.destroy(existingUser.profile.imagePublicId);
+          try {
+            await cloudinary.uploader.destroy(
+              existingUser.profile.imagePublicId
+            );
+
+            console.log(
+              'Previous image deleted:',
+              existingUser.profile.imagePublicId
+            );
+          } catch (error) {
+            console.error('Error deleting previous image:', error);
+          }
         }
 
         existingUser.profile.imageUrl = uploadResult.url;
@@ -165,7 +134,7 @@ const deleteProfileImage = async (req: Request, res: Response) => {
     }
 
     if (!user.profile.imagePublicId) {
-      return res.status(400).json({ message: 'Np profile image to delete.' });
+      return res.status(400).json({ message: 'No profile image to delete.' });
     }
 
     await cloudinary.uploader.destroy(user.profile.imagePublicId);
